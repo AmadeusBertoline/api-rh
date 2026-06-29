@@ -1,5 +1,6 @@
 package rh.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -22,6 +23,8 @@ public class Avaliacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long idFuncionario;
+
     @ManyToOne
     @JoinColumn(name = "funcionario_id")
     private Funcionario funcionario;
@@ -30,7 +33,7 @@ public class Avaliacao {
     private String avaliador;
 
     @Column(nullable = false)
-    private Double nota;
+    private BigDecimal nota;
 
     @Column(nullable = false, length = 50)
     private String comentario;

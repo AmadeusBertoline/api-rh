@@ -12,11 +12,11 @@ import rh.repository.FuncionarioRepository;
 
 @Service
 public class FuncionarioService {
-    
+
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
-    public FuncionarioResponseDTO criar(FuncionarioRequestDTO dto){
+    public FuncionarioResponseDTO criar(FuncionarioRequestDTO dto) {
 
         Funcionario funcionario = new Funcionario();
         funcionario.setId(dto.getId());
@@ -32,8 +32,8 @@ public class FuncionarioService {
 
     }
 
-    public List<FuncionarioResponseDTO> listarTodos(){
-        
+    public List<FuncionarioResponseDTO> listarTodos() {
+
         return (funcionarioRepository.findAll()
                 .stream()
                 .map(this::toDTO)
@@ -41,16 +41,56 @@ public class FuncionarioService {
 
     }
 
-    public FuncionarioResponseDTO atualizar(Long id, FuncionarioRequestDTO dto){
+    public FuncionarioResponseDTO atualizar(Long id, FuncionarioRequestDTO dto) {
 
         Funcionario funcionario = funcionarioRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: "+id));
+                .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: " + id));
 
         return toDTO(funcionario);
 
     }
 
-    private FuncionarioResponseDTO toDTO(Funcionario funcionario){
+    public void deletar(Long id) {
+
+        funcionarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: " + id));
+
+        funcionarioRepository.deleteById(id);
+
+    }
+
+    public FuncionarioResponseDTO buscaPorId(Long id) {
+
+        Funcionario funcionario = funcionarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: " + id));
+
+        return toDTO(funcionario);
+
+    }
+
+    public FuncionarioResponseDTO desativar(Long id){
+
+        Funcionario funcionario = funcionarioRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: "+id));
+
+        funcionario.setAtivo(false);
+
+        return toDTO(funcionario);
+
+    }
+
+    public FuncionarioResponseDTO ativar(Long id){
+
+        Funcionario funcionario = funcionarioRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: "+id));
+
+        funcionario.setAtivo(true);
+
+        return toDTO(funcionario);
+
+    }
+
+    private FuncionarioResponseDTO toDTO(Funcionario funcionario) {
 
         FuncionarioResponseDTO dto = new FuncionarioResponseDTO();
         dto.setId(funcionario.getId());
