@@ -1,4 +1,4 @@
-# API Bank — Sistema de Gerenciamento Financeiro
+# API Rh— Sistema de Gerenciamento de Funcionários e suas Avaliações
 
 API REST para gerenciamento de funcionários e suas avaliações, 
 desenvolvida com Java 21 e Spring Boot 3.
