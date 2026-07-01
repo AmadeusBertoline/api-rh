@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
 import rh.dto.FuncionarioRequestDTO;
 import rh.dto.FuncionarioResponseDTO;
 import rh.exception.ResourceNotFoundException;
@@ -16,10 +18,10 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
+    @Transactional
     public FuncionarioResponseDTO criar(FuncionarioRequestDTO dto) {
 
         Funcionario funcionario = new Funcionario();
-        funcionario.setId(dto.getId());
         funcionario.setNome(dto.getNome());
         funcionario.setCpf(dto.getCpf());
         funcionario.setCargo(dto.getCargo());
@@ -32,19 +34,30 @@ public class FuncionarioService {
 
     }
 
-    public List<FuncionarioResponseDTO> listarTodos() {
+    @Transactional
+    public List<FuncionarioResponseDTO> listar(String departamento) {
 
-        return (funcionarioRepository.findAll()
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList()));
+        return (
+            funcionarioRepository.buscarPorDepartamentoOpcional(departamento)
+            .stream()
+            .map(this::toDTO)
+            .collect(Collectors.toList())
+        );
 
     }
 
+    @Transactional
     public FuncionarioResponseDTO atualizar(Long id, FuncionarioRequestDTO dto) {
 
         Funcionario funcionario = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: " + id));
+
+        funcionario.setId(id);
+        funcionario.setNome(dto.getNome());
+        funcionario.setSalario(dto.getSalario());
+        funcionario.setCargo(dto.getCargo());
+        funcionario.setCpf(dto.getCpf());
+        funcionario.setDepartamento(dto.getDepartamento());
 
         return toDTO(funcionario);
 
@@ -68,23 +81,31 @@ public class FuncionarioService {
 
     }
 
+    @Transactional
     public FuncionarioResponseDTO desativar(Long id){
 
         Funcionario funcionario = funcionarioRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: "+id));
 
+        funcionario.setId(id);
         funcionario.setAtivo(false);
+
+        funcionarioRepository.save(funcionario);
 
         return toDTO(funcionario);
 
     }
 
+    @Transactional
     public FuncionarioResponseDTO ativar(Long id){
 
         Funcionario funcionario = funcionarioRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: "+id));
 
+        funcionario.setId(id);
         funcionario.setAtivo(true);
+
+        funcionarioRepository.save(funcionario);
 
         return toDTO(funcionario);
 
