@@ -44,7 +44,7 @@ Controller  →  Service  →  Repository  →  Banco de Dados
 
 ### Configuração do banco
 ```sql
-CREATE DATABASE financas_db;
+CREATE DATABASE recursos_humanos_db;
 ```
 
 ### Executando a aplicação
