@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import rh.dto.FuncionarioRequestDTO;
 import rh.dto.FuncionarioResponseDTO;
 import rh.exception.ResourceNotFoundException;
 import rh.model.Funcionario;
+
 import rh.repository.FuncionarioRepository;
 
 @Service
@@ -17,6 +17,9 @@ public class FuncionarioService {
 
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    private AvaliacaoService avaliacaoService;
 
     @Transactional
     public FuncionarioResponseDTO criar(FuncionarioRequestDTO dto) {
@@ -34,7 +37,6 @@ public class FuncionarioService {
 
     }
 
-    @Transactional
     public List<FuncionarioResponseDTO> listar(String departamento) {
 
         return (
@@ -63,6 +65,7 @@ public class FuncionarioService {
 
     }
 
+    @Transactional
     public void deletar(Long id) {
 
         funcionarioRepository.findById(id)
@@ -110,7 +113,7 @@ public class FuncionarioService {
         return toDTO(funcionario);
 
     }
-
+    
     private FuncionarioResponseDTO toDTO(Funcionario funcionario) {
 
         FuncionarioResponseDTO dto = new FuncionarioResponseDTO();
@@ -123,6 +126,7 @@ public class FuncionarioService {
         dto.setDataAdmissao(funcionario.getDataAdmissao());
         dto.setDataAdmissao(funcionario.getDataAdmissao());
         dto.setAtivo(funcionario.getAtivo());
+        dto.setNotaMedia(avaliacaoService.notaMedia(funcionario.getId()));
 
         return dto;
 

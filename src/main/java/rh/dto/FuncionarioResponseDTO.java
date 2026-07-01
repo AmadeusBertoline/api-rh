@@ -16,5 +16,6 @@ public class FuncionarioResponseDTO {
     private String departamento;
     private LocalDateTime dataAdmissao;
     private Boolean ativo;
+    private BigDecimal notaMedia;
 
 }

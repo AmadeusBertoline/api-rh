@@ -73,6 +73,12 @@ public class AvaliacaoService {
 
     }
 
+    public BigDecimal notaMedia(Long id){
+
+        return avaliacaoRepository.notaMedia(id);
+
+    }
+
     private AvaliacaoResponseDTO toDTO(Avaliacao avaliacao){
 
         AvaliacaoResponseDTO dto = new AvaliacaoResponseDTO();
