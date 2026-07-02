@@ -61,7 +61,7 @@ public class FuncionarioController {
 
     @Operation(summary = "deletar um funcionário")
     @DeleteMapping("/{id}")
-    public ResponseEntity<FuncionarioResponseDTO> deletar(@PathVariable @Valid Long id){
+    public ResponseEntity<Void> deletar(@PathVariable @Valid Long id){
 
         funcionarioService.deletar(id);
         return ResponseEntity.noContent().build();
@@ -70,7 +70,7 @@ public class FuncionarioController {
 
     @Operation(summary = "buscar um funcionário pelo id")
     @GetMapping("/{id}")
-    public ResponseEntity<FuncionarioResponseDTO> buscaPorId(@PathVariable @Valid Long id){
+    public ResponseEntity<FuncionarioResponseDTO> buscaPorId(@PathVariable Long id){
 
         FuncionarioResponseDTO funcionario = funcionarioService.buscaPorId(id);
         funcionario.setNotaMedia(funcionarioService.notaMedia(id));

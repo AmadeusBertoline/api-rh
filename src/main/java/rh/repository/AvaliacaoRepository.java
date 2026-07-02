@@ -9,7 +9,7 @@ import rh.model.Avaliacao;
 import rh.model.Funcionario;
 
 public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long>{
-    List<Avaliacao> findByFuncionarioIdOrderByIdDesc(Long id);
+    List<Avaliacao> findByFuncionarioIdOrderByDataAvaliacaoDesc(Long id);
 
     @Query("SELECT AVG(a.nota) FROM Avaliacao a WHERE :funcionario = funcionario")
     BigDecimal notaMedia(@Param("funcionario") Funcionario funcionario);

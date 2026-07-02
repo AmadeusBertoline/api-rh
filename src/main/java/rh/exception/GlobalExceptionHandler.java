@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
         corpo.put("timestamp", LocalDateTime.now());
         corpo.put("status", HttpStatus.BAD_REQUEST.value());
         corpo.put("erro", "Valor inválido inserido");
-        corpo.put("mensagem", ex.getMessage());
+        corpo.put("mensagem", errosPorCampo);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(corpo);
 
@@ -64,13 +64,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    private ResponseEntity<Map<String, Object>> handleGlobal(Exception ex){
+    public ResponseEntity<Map<String, Object>> handleGlobal(Exception ex){
 
         Map<String, Object> corpo = new HashMap<>();
         corpo.put("timestamp", LocalDateTime.now());
         corpo.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
         corpo.put("erro", "Um erro inesperado ocorreu no servidor, tente novamente mais tarde.");
-        corpo.put("mensagem", ex.getMessage());
+        corpo.put("mensagem", "Erro interno do sistema");
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(corpo);
     

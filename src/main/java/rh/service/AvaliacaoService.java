@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import rh.dto.AvaliacaoRequestDTO;
 import rh.dto.AvaliacaoResponseDTO;
 import rh.exception.RegraNegocioException;
@@ -56,7 +55,7 @@ public class AvaliacaoService {
         funcionarioRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: " +id));
 
-        return avaliacaoRepository.findByFuncionarioIdOrderByIdDesc(id)
+        return avaliacaoRepository.findByFuncionarioIdOrderByDataAvaliacaoDesc(id)
         .stream()
         .map(this::toDTO)
         .collect(Collectors.toList());
