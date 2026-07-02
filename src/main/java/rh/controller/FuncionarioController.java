@@ -73,6 +73,7 @@ public class FuncionarioController {
     public ResponseEntity<FuncionarioResponseDTO> buscaPorId(@PathVariable @Valid Long id){
 
         FuncionarioResponseDTO funcionario = funcionarioService.buscaPorId(id);
+        funcionario.setNotaMedia(funcionarioService.notaMedia(id));
 
         return ResponseEntity.status(HttpStatus.OK).body(funcionario);
 

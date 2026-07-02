@@ -1,5 +1,6 @@
 package rh.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import rh.dto.FuncionarioRequestDTO;
 import rh.dto.FuncionarioResponseDTO;
 import rh.exception.ResourceNotFoundException;
 import rh.model.Funcionario;
-
+import rh.repository.AvaliacaoRepository;
 import rh.repository.FuncionarioRepository;
 
 @Service
@@ -19,7 +20,7 @@ public class FuncionarioService {
     private FuncionarioRepository funcionarioRepository;
 
     @Autowired
-    private AvaliacaoService avaliacaoService;
+    private AvaliacaoRepository avaliacaoRepository;
 
     @Transactional
     public FuncionarioResponseDTO criar(FuncionarioRequestDTO dto) {
@@ -61,6 +62,8 @@ public class FuncionarioService {
         funcionario.setCpf(dto.getCpf());
         funcionario.setDepartamento(dto.getDepartamento());
 
+        funcionarioRepository.save(funcionario);
+
         return toDTO(funcionario);
 
     }
@@ -80,7 +83,7 @@ public class FuncionarioService {
         Funcionario funcionario = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: " + id));
 
-        return toDTO(funcionario);
+        return toDTO(funcionario); 
 
     }
 
@@ -113,6 +116,15 @@ public class FuncionarioService {
         return toDTO(funcionario);
 
     }
+
+    public BigDecimal notaMedia(Long id){
+
+        Funcionario funcionario = funcionarioRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: "+id));
+
+        return avaliacaoRepository.notaMedia(funcionario);
+
+    }
     
     private FuncionarioResponseDTO toDTO(Funcionario funcionario) {
 
@@ -126,8 +138,7 @@ public class FuncionarioService {
         dto.setDataAdmissao(funcionario.getDataAdmissao());
         dto.setDataAdmissao(funcionario.getDataAdmissao());
         dto.setAtivo(funcionario.getAtivo());
-        dto.setNotaMedia(avaliacaoService.notaMedia(funcionario.getId()));
-
+        
         return dto;
 
     }

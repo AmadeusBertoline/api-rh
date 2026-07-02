@@ -41,9 +41,6 @@ public class Funcionario {
     @Column(nullable = false)
     private Boolean ativo;
 
-    @Column(nullable = false)
-    private BigDecimal notaMedia;
-
     @PrePersist
     private void prePersist(){
 

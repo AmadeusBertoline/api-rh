@@ -40,7 +40,6 @@ public class AvaliacaoService {
         }
 
         Avaliacao avaliacao = new Avaliacao();
-        avaliacao.setIdFuncionario(dto.getIdFuncionario());
         avaliacao.setFuncionario(funcionario);
         avaliacao.setAvaliador(dto.getAvaliador());
         avaliacao.setNota(dto.getNota());
@@ -57,7 +56,7 @@ public class AvaliacaoService {
         funcionarioRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado de id: " +id));
 
-        return avaliacaoRepository.findByIdFuncionarioOrderByIdDesc(id)
+        return avaliacaoRepository.findByFuncionarioIdOrderByIdDesc(id)
         .stream()
         .map(this::toDTO)
         .collect(Collectors.toList());
@@ -73,17 +72,11 @@ public class AvaliacaoService {
 
     }
 
-    public BigDecimal notaMedia(Long id){
-
-        return avaliacaoRepository.notaMedia(id);
-
-    }
-
     private AvaliacaoResponseDTO toDTO(Avaliacao avaliacao){
 
         AvaliacaoResponseDTO dto = new AvaliacaoResponseDTO();
         dto.setId(avaliacao.getId());
-        dto.setIdFuncionario(avaliacao.getIdFuncionario());
+        dto.setIdFuncionario(avaliacao.getFuncionario().getId());
         dto.setAvaliador(avaliacao.getAvaliador());
         dto.setNota(avaliacao.getNota());
         dto.setDataAvaliacao(avaliacao.getDataAvaliacao());

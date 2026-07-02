@@ -23,8 +23,6 @@ public class Avaliacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long idFuncionario;
-
     @ManyToOne
     @JoinColumn(name = "funcionario_id")
     private Funcionario funcionario;
